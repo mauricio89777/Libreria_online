@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Facebook, Instagram, Twitter, Linkedin } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -18,6 +19,10 @@ export default function Footer() {
         <div className="flex flex-col gap-2">
           <h3 className="text-lg font-medium">Enlaces Rápidos</h3>
           <nav className="flex flex-col gap-2">
+            <Link href="/linksdasd" className="text-sm hover:underline">
+              Más Sobre Nosotros
+            </Link>
+
             <p>sobre nosotros/ pagina / </p>
             <p>¿quieres Trabajar con nosotros</p>
             <p>Política de Privacidad</p>
