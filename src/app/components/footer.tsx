@@ -22,11 +22,24 @@ export default function Footer() {
             <Link href="/linksdasd" className="text-sm hover:underline">
               Más Sobre Nosotros
             </Link>
-
-            <p>sobre nosotros/ pagina / </p>
-            <p>¿quieres Trabajar con nosotros</p>
-            <p>Política de Privacidad</p>
-            <p>Términos y condiciones</p>
+            <Link
+              href="/trabaja-con-nosotros"
+              className="text-sm hover:underline"
+            >
+              ¿Quieres Trabajar con Nosotros?
+            </Link>
+            <Link
+              href="/politica-privacidad"
+              className="text-sm hover:underline"
+            >
+              Politíca y Privacidad
+            </Link>
+            <Link
+              href="Terminos-y-condiciones"
+              className="text-sm hover:underline"
+            >
+              Términos y Condiciones
+            </Link>
             {/* Aqui irian los link de las paginas */}
           </nav>
         </div>
@@ -34,7 +47,7 @@ export default function Footer() {
           <h3 className="text-lg font-medium">Contacto</h3>
           <address className="flex flex-col gap-2 not-italic">
             <p className="text-sm">Calle Librería 123</p>
-            <p className="text-sm">Ciudad, País</p>
+            <p className="text-sm">Santiago, Chile</p>
             <p className="text-sm">info@libreria.com</p>
             <p className="text-sm">+123 456 7890</p>
           </address>
@@ -42,9 +55,41 @@ export default function Footer() {
         <div className="flex flex-col gap-2">
           <h3 className="text-lg font-medium">Síguenos</h3>
           <div className="flex gap-4">
-            <p>link</p>
-            <p>link</p>
-            <p>link</p>
+            <Link
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Facebook className="h-5 w-5" />
+              <span className="sr-only">Facebook</span>
+            </Link>
+
+            <Link
+              href="https://instagram.com"
+              target="_black"
+              rel="noopener noreferrer"
+            >
+              <Instagram className="h-5 w-5" />
+              <span className="sr-only">Instagram</span>
+            </Link>
+
+            <Link
+              href="https://Twitter.com"
+              target="_black"
+              rel="noopener noreferrer"
+            >
+              <Twitter className="h-5 w-5" />
+              <span className="sr-only">Twitter</span>
+            </Link>
+
+            <Link
+              href="https://Linkedin.com"
+              target="_black"
+              rel="noopener noreferrer"
+            >
+              <Linkedin className="h-5 w-5" />
+              <span className="sr-only">Linkedin</span>
+            </Link>
           </div>
         </div>
       </div>
