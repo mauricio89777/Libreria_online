@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/auth-context";
-import AdminDashboard from "@/app/components/admin-dashboard";
+import AdminDashboard from "@/components/admin-dashboard";
 
 export default function AdminPage() {
   const { user } = useAuth();
@@ -11,7 +11,7 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (!user) {
-      router.push("/login?redirect=/admin");
+      router.push("/administrador");
     } else if (user.role !== "admin") {
       router.push("/");
     }
@@ -21,5 +21,11 @@ export default function AdminPage() {
     return null;
   }
 
-  return <AdminDashboard />;
+  return (
+    <>
+      <h1 className="text-white">Esto es admin</h1>
+      <AdminDashboard/>
+    </>
+  );
+  
 }

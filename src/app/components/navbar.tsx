@@ -71,7 +71,7 @@ export default function Navbar() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Buscar..."
-              className="px-3 py-1 text-sm border-none outline-none"
+              className="px-3 py-1 text-sm border-none outline-none text-gray-700"
             />
             <button type="submit" className="p-2 bg-gray-200 hover:bg-gray-300">
               <Search className="h-4 w-4 text-gray-600" />
