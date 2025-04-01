@@ -47,10 +47,8 @@ export default function Navbar() {
             className="flex items-center gap-2"
             aria-label="Inicio"
           >
-            <BookOpen className="h-6 w-6 text-white" />
-            <span className="text-xl font-bold text-white">
-              Librería Online
-            </span>
+            {/* <BookOpen className="h-6 w-6 text-white" /> */}
+            <img src="logo_libreria.svg"  width={60} height={30} alt="logo" />
           </Link>
         </div>
 

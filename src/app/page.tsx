@@ -26,7 +26,7 @@ export default function Home() {
               Explora nuestra colección de libros y encuentra tu próxima
               aventura literaria.
             </p>
-            <Button asChild className="mt-6">
+            <Button asChild className="mt-6 bg-blue-600">
               {/* mt-6  bg-blue-600 hover:bg-blue-700 mt-4 py-6esto estaba haci pero lo cambie para que  */}
               <Link href="/catalogo">Ver Catálogo</Link>
             </Button>

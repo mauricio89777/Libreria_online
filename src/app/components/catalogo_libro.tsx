@@ -347,7 +347,7 @@ export default function BookCatalog() {
                 </div>
               </CardContent>
               <CardFooter className="p-4 pt-0">
-                <Button className="w-full" onClick={() => addToCart(book)}>
+                <Button className="w-full bg-blue-600" onClick={() => addToCart(book)}>
                   Añadir al Carrito
                 </Button>
               </CardFooter>
