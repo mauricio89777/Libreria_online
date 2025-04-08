@@ -49,6 +49,8 @@ const books: Book[] = [
   },
 ];
 
+// aqui hay que poner los demas libros solamente hay 3
+
 export default function BookDetailPage() {
   const params = useParams<{ id: string }>();
   const { addToCart } = useCart();

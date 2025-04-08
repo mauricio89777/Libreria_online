@@ -3,8 +3,8 @@
 // import { UsersTab } from "@/app/components/admin/users-tab";
 // import { OrdersTab } from "@/app/components/admin/orders-tab";
 // import { AdminCards } from "@/app/components/admin/admin-cards";
-//import { Tabs, TabsList, TabsContent } from "@/app/components/ui/tabs";
-"use client";
+import { Tabs, TabsList, TabsContent } from "@/app/components/ui/tabs";
+("use client");
 
 import { useAuth } from "@/app/context/auth-context";
 import { Button } from "@/app/components/ui/button";

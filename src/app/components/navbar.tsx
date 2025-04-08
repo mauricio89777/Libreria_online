@@ -48,7 +48,7 @@ export default function Navbar() {
             aria-label="Inicio"
           >
             {/* <BookOpen className="h-6 w-6 text-white" /> */}
-            <img src="logo_libreria.svg"  width={60} height={30} alt="logo" />
+            <img src="logo_libreria.svg" width={60} height={30} alt="logo" />
           </Link>
         </div>
 
@@ -71,6 +71,12 @@ export default function Navbar() {
             className="text-sm font-medium text-white hover:text-blue-200 transition-colors"
           >
             Contacto
+          </Link>
+          <Link
+            href="/buscador"
+            className="text-sm font-medium text-white hover:text-blue-200 transition-colors"
+          >
+            Buscar
           </Link>
         </nav>
 

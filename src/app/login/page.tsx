@@ -51,7 +51,7 @@ export default function LoginPage() {
         </form>
         <div className="text-center text-sm">
           ¿No tienes cuenta?{" "}
-          <Link href="/registro" className="text-primary hover:underline">
+          <Link href="/registrarse" className="text-primary hover:underline">
             Regístrate
           </Link>
         </div>
