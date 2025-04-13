@@ -32,7 +32,7 @@ export default function Footer() {
     { text: "Más Sobre Nosotros", href: "/sobrenosotros" },
     { text: "¿Quieres Trabajar con Nosotros?", href: "/trabaja-con-nosotros" },
     { text: "Política y Privacidad", href: "/politica-privacidad" },
-    { text: "Términos y Condiciones", href: "/terminos-y-condiciones" },
+    { text: "Términos y Condiciones", href: "/terminosCodiciones" },
   ];
 
   return (
