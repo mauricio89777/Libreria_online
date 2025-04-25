@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/auth-context";
-import AdminDashboard from "@/components/admin-dashboard";
 
 export default function AdminPage() {
   const { user, isLoading } = useAuth();
@@ -35,7 +34,7 @@ export default function AdminPage() {
 
   return (
     <div className="container mx-auto p-4">
-      <AdminDashboard />
+      <h1>Aqui poner deberia ir un panel de administracion xd</h1>
     </div>
   );
 }

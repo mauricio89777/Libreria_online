@@ -18,7 +18,7 @@ export default function LoginPage() {
 
     if (success) {
       // Redirigir según el rol del usuario
-      router.push(isAdmin ? "/admin" : "/");
+      router.push(isAdmin ? "/" : "/");
     }
   };
 

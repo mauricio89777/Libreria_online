@@ -137,15 +137,23 @@ export default function Navbar() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56 bg-white">
+                {/* esto es perfil */}
                 <DropdownMenuItem asChild className="cursor-pointer">
-                  <Link
-                    href={user.role === "admin" ? "/admin" : "/perfil"}
-                    className="flex items-center"
-                  >
+                  <Link href="/perfil" className="flex items-center">
                     <User className="mr-2 h-4 w-4" />
-                    {user.role === "admin" ? "Panel Admin" : "Mi Perfil"}
+                    Mi Perfil
                   </Link>
                 </DropdownMenuItem>
+                {/* verifica si es admin y permite el panel admin */}
+                {user.role === "admin" && (
+                  <DropdownMenuItem asChild className="cursor-pointer">
+                    <Link href="/administrador" className="flex items-center">
+                      <User className="mr-2 h-4 w-4" />
+                      Panel Admin
+                    </Link>
+                  </DropdownMenuItem>
+                )}
+                {/* Logout */}
                 <DropdownMenuItem
                   className="cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50"
                   onClick={handleLogout}
