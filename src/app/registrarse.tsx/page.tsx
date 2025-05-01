@@ -1,4 +1,4 @@
-//fijarse en el estilo, esto.....
+//fijarse en el estilo, esto..... esto hay que arrelgarlo con el nuevo loign
 
 "use client";
 

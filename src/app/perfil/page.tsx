@@ -36,6 +36,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useAuth } from '../context/auth-context';
 
 export default function PerfilFormularioEstaticoConBoton() {
   // Estado para manejar los valores de los campos del formulario
@@ -49,8 +50,7 @@ export default function PerfilFormularioEstaticoConBoton() {
   });
 
   // Manejador genérico para cambios en los inputs
-  // Para TypeScript, el tipo sería: (e: React.ChangeEvent<HTMLInputElement>)
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prevData => ({
       ...prevData,
@@ -58,25 +58,21 @@ export default function PerfilFormularioEstaticoConBoton() {
     }));
   };
 
-  // Manejador para el evento de envío del formulario
-  // Para TypeScript, el tipo sería: (e: React.FormEvent<HTMLFormElement>)
-  const handleSubmit = (e) => {
-    // Prevenir el comportamiento por defecto del formulario (recargar la página)
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    // Aquí es donde normalmente enviarías los datos a un servidor o API.
-    // Como es estático, solo mostraremos los datos en la consola.
     console.log("Datos del formulario a enviar (simulado):", formData);
-
-    // Opcional: Mostrar una alerta al usuario
     alert("Formulario 'enviado' (revisa la consola del navegador).");
-
- 
   };
+
+  const { user, isLoading } = useAuth();
 
   return (
     <div className="container mx-auto p-4">
       {/* Ahora usamos <form> y añadimos onSubmit */}
+      
+      <div className="container mx-auto p-4">
+       {user && <h1>¡Hola, {user.role === "admin" ? "Admin" : "Usuario"}!</h1>}
+     </div>
       <form onSubmit={handleSubmit} className="bg-white p-6 md:p-8 rounded-lg shadow-md max-w-3xl mx-auto">
         <h2 className="text-xl font-semibold mb-6 border-b pb-3 text-gray-800">
           Datos personales

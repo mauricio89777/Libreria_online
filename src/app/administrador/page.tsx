@@ -8,17 +8,19 @@ export default function AdminPage() {
   const { user, isLoading } = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    if (!isLoading) {
-      // Verificación estricta del admin
-      const isAdmin =
-        user?.role === "admin" && user?.email === "admin@libreria.com";
+  //aqui esta el problema esta harcoreado el amidn
 
-      if (!isAdmin) {
-        router.push("/login?redirect=/admin");
-      }
-    }
-  }, [user, isLoading, router]);
+  // useEffect(() => {
+  //   if (!isLoading) {
+  //     // Verificación estricta del admin
+  //     const isAdmin =
+  //       user?.role === "admin" && user?.email === "admin@libreria.com";
+
+  //     if (!isAdmin) {
+  //       router.push("/login?redirect=/admin");
+  //     }
+  //   }
+  // }, [user, isLoading, router]);
 
   if (isLoading) {
     return (
@@ -32,9 +34,51 @@ export default function AdminPage() {
     return null; // O puedes mostrar un mensaje de "No autorizado"
   }
 
+  const goToCrudUsuarios = () => {
+    router.push("/administrador/crud_usuarios");
+  };
+   const goToCrudLibros = () => {
+     router.push("/administrador/crud_libros");
+   };
+
+   const goToCrudCategoria = () => {
+     router.push("/administrador/crud_categorias");
+   };
+
   return (
     <div className="container mx-auto p-4">
-      <h1>Aqui poner deberia ir un panel de administracion xd</h1>
+      <h1 className="text-2xl font-bold mb-4">Panel de Administración</h1>
+      <div className="flex flex-col gap-4">
+        <button
+          onClick={goToCrudUsuarios}
+          className="p-4 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+        >
+          Gestionar Usuarios
+        </button>
+         <button
+          onClick={goToCrudLibros}
+          className="p-4 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+        >
+          Gestionar libros
+        </button> 
+        <button
+          onClick={goToCrudCategoria}
+          className="p-4 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+        >
+          Gestionar categorias
+        </button>
+        {/* Puedes agregar más botones si quieres, como para productos o pedidos */}
+      </div>
     </div>
   );
 }
+
+/* <div>
+  <h1 className="text-2xl font-bold mb-4">Panel de Administración</h1>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <button className="p-4 bg-blue-500 text-white rounded">Crear Producto</button>
+    <button className="p-4 bg-green-500 text-white rounded">Editar Producto</button>
+    <button className="p-4 bg-yellow-500 text-white rounded">Eliminar Producto</button>
+    <button className="p-4 bg-purple-500 text-white rounded">Ver Usuarios</button>
+  </div>
+</div> */
