@@ -116,5 +116,5 @@ const CategoriaClient = () => {
     </div>
   );
 };
-
+//hice cambios aqui en relacion a id
 export default CategoriaClient;

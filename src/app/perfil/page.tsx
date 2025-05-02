@@ -1,38 +1,3 @@
-// "use client";
-
-// import { useEffect } from "react";
-// import { useRouter } from "next/navigation";
-// import { useAuth } from "@/app/context/auth-context";
-
-// export default function PerfilPage() {
-//   const { user, isLoading } = useAuth();
-//   const router = useRouter();
-
-//   useEffect(() => {
-//     // Verificación cuando el estado no está cargando
-//     if (!isLoading) {
-//       // Si no hay usuario, redirigir al login
-//       if (!user) {
-//         router.push("/login");
-//         return;
-//       }
-//     }
-//   }, [user, isLoading, router]);
-
-//   if (isLoading) {
-//     return <div>Cargando...</div>;
-//   }
-
-//   return (
-//     <div className="container mx-auto p-4">
-//       {user && <h1>¡Hola, {user.role === "admin" ? "Admin" : "Usuario"}!</h1>}
-//     </div>
-//   );
-// }
-
-
-
-
 "use client";
 
 import React, { useState } from 'react';
@@ -175,16 +140,16 @@ export default function PerfilFormularioEstaticoConBoton() {
           </div>
         </div>
 
-        {/* --- Botón de Enviar --- */}
-        <div className="mt-8 text-right"> {/* Espacio antes del botón y alineación a la derecha */}
+      
+        <div className="mt-8 text-right"> 
           <button
-            type="submit" // Importante: type="submit" para que active el onSubmit del form
+            type="submit" 
             className="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
           >
             Enviar
           </button>
         </div>
-        {/* --- Fin Botón de Enviar --- */}
+   
 
       </form>
     </div>

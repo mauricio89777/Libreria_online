@@ -72,13 +72,3 @@ export default function AdminPage() {
     </div>
   );
 }
-
-/* <div>
-  <h1 className="text-2xl font-bold mb-4">Panel de Administración</h1>
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <button className="p-4 bg-blue-500 text-white rounded">Crear Producto</button>
-    <button className="p-4 bg-green-500 text-white rounded">Editar Producto</button>
-    <button className="p-4 bg-yellow-500 text-white rounded">Eliminar Producto</button>
-    <button className="p-4 bg-purple-500 text-white rounded">Ver Usuarios</button>
-  </div>
-</div> */

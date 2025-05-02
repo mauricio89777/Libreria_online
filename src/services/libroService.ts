@@ -1,75 +1,59 @@
 import axios from 'axios';
+import { Book } from '@/app/types/book'; // Importa el TIPO Book (estructura API GET)
+import { BookFormData } from '@/app/types/typeform'; // Importa el TIPO BookFormData (estructura formulario)
 
-// Define la URL base de tu API para libros.
-// ASEGÚRATE DE QUE ESTA URL COINCIDA CON TUS RUTAS EN EL BACKEND
-// Por ejemplo, si tus rutas de libros empiezan con '/api/books', debería ser:
-const API_URL = 'http://localhost:5000/api/books';
+const API_URL = 'http://localhost:5000/api/books'; // ¡Verifica que sea correcto!
 
-// Opcional pero recomendado: Define una interfaz para la estructura de un libro
-// Ajusta los campos según los atributos que tenga tu modelo Book en el backend
-interface Libro {
-  id?: number | string; // ID es opcional para la creación
-  title: string;
-  description?: string;
-  authorId: number | string; // Asumiendo que tienes un campo para el ID del autor
-  categoryId: number | string; // Asumiendo que tienes un campo para el ID de la categoría
-  // Agrega otros campos que tu modelo Libro tenga (ej: price, publicationDate, stock, etc.)
-  // price?: number;
-  // publicationDate?: string; // Considerar tipo Date si aplica
-  // stock?: number;
-}
+type BookApiPayload = {
+   title: string;
+   description: string | null;
+   author_id: number | null; // <-- NOMBRE DE CAMPO QUE ESPERA EL BACKEND
+   category_id: number | null; // <-- NOMBRE DE CAMPO QUE ESPERA EL BACKEND
+   price: number;
+   rating: number;
+   image: string | null;
+   stock: number;
+};
 
-// Obtener todos los libros
+
+type CreateBookResponse = {
+    id: Book; // Tu backend devuelve el libro completo dentro de un campo 'id'
+    message: string;
+};
+
+type UpdateBookResponse = {
+    message: string; // para que pasa
+};
+
+
+// Función: Obtener todos los libros
+// **Asegúrate de que axios.get esté anotado con <Book[]>**
 export const getLibros = async (token: string) => {
-  return await axios.get<Libro[]>(`${API_URL}`, { // <Libro[]> indica que se espera un array de Libros
+  return await axios.get<Book[]>(`${API_URL}`, { // <--- ¡Aquí debe ser Book[]!
     headers: { Authorization: `Bearer ${token}` },
   });
 };
 
-// Crear nuevo libro
-// Recibe un objeto con los datos del libro (sin ID)
-export const createLibro = async (bookData: Omit<Libro, 'id'>, token: string) => {
-  // El backend espera los datos directamente en req.body según tu controlador createBook
-  return await axios.post<Libro>(`${API_URL}`, bookData, { // <Libro> indica que se espera un solo objeto Libro en la respuesta (o el formato { id, message })
+// Función: Crear nuevo libro
+// **Asegúrate de que reciba BookApiPayload y axios.post esté anotado con <CreateBookResponse>**
+export const createLibro = async (bookData: BookApiPayload, token: string) => { // <--- ¡Aquí debe ser BookApiPayload!
+  return await axios.post<CreateBookResponse>(`${API_URL}`, bookData, { // <--- ¡Aquí debe ser CreateBookResponse!
     headers: { Authorization: `Bearer ${token}` },
   });
 };
 
-// Obtener un libro por ID
-export const getLibroById = async (id: number | string, token: string) => {
-  return await axios.get<Libro>(`${API_URL}/${id}`, { // <Libro> indica que se espera un solo objeto Libro
+// Función: Actualizar un libro por ID
+// **Asegúrate de que reciba Partial<BookApiPayload> y axios.put esté anotado con <UpdateBookResponse>**
+export const updateLibro = async (id: number | string, updatedData: Partial<BookApiPayload>, token: string) => { // <--- ¡Aquí debe ser Partial<BookApiPayload>!
+  return await axios.put<UpdateBookResponse>(`${API_URL}/${id}`, updatedData, { // <--- ¡Aquí debe ser UpdateBookResponse!
     headers: { Authorization: `Bearer ${token}` },
   });
 };
 
-// Actualizar un libro por ID
-// Recibe el ID y un objeto con los datos a actualizar (pueden ser parciales)
-export const updateLibro = async (id: number | string, updatedData: Partial<Libro>, token: string) => {
-  // El backend espera los datos actualizados en req.body según tu controlador updateBook
-  return await axios.put<Libro>(`${API_URL}/${id}`, updatedData, { // Partial<Libro> indica que updatedData puede tener solo algunos campos de Libro
-    headers: { Authorization: `Bearer ${token}` },
-  });
-};
-
-// Eliminar un libro por ID
+// Función: Eliminar un libro por ID
 export const deleteLibro = async (id: number | string, token: string) => {
-  return await axios.delete(`${API_URL}/${id}`, { // No se espera un cuerpo de respuesta específico, solo un mensaje
-    headers: { Authorization: `Bearer ${token}` },
-  });
-};
-
-// Obtener libros por categoría
-export const getLibrosByCategory = async (categoryId: number | string, token: string) => {
-   // ASEGÚRATE DE QUE LA RUTA COINCIDA CON TU BACKEND (ej: /api/books/category/:categoryId)
-  return await axios.get<Libro[]>(`${API_URL}/category/${categoryId}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-};
-
-// Obtener libros por autor
-export const getLibrosByAuthor = async (authorId: number | string, token: string) => {
-  // ASEGÚRATE DE QUE LA RUTA COINCIDA CON TU BACKEND (ej: /api/books/author/:authorId)
-  return await axios.get<Libro[]>(`${API_URL}/author/${authorId}`, {
+  // No se espera un cuerpo específico, el tipo de respuesta puede ser 'any' o 'void' si no devuelve JSON
+  return await axios.delete<any>(`${API_URL}/${id}`, { // <any> o <void> si no hay JSON de respuesta
     headers: { Authorization: `Bearer ${token}` },
   });
 };
