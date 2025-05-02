@@ -1,192 +1,140 @@
-"use client";
+'use client';
 
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-  ReactNode,
-} from "react";
-import { useRouter } from "next/navigation";
-import { User, AuthResponse } from "@/app/types/user";
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+// Importamos los tipos que definiste
+import { User, AuthResponse, LoginFormData } from "@/app/types/user";
 
-type AuthContextType = {
+interface AuthContextType {
+  token: string | null;
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
+  // login ahora devuelve AuthResponse
   login: (email: string, password: string) => Promise<AuthResponse>;
-  register: (
-    name: string,
-    email: string,
-    password: string
-  ) => Promise<AuthResponse>;
   logout: () => void;
-  clearError: () => void;
-};
+}
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
 
-  // Cargar usuario al iniciar
   useEffect(() => {
-    const initializeAuth = async () => {
-      try {
-        const savedUser = localStorage.getItem("user");
-        if (savedUser) {
-          const parsedUser = JSON.parse(savedUser) as User;
-          setUser(parsedUser);
-        }
-      } catch (err) {
-        console.error("Error al cargar usuario:", err);
-        localStorage.removeItem("user");
-      } finally {
-        setIsLoading(false);
+    try {
+      const storedToken = localStorage.getItem('token');
+      const storedUser = localStorage.getItem('user');
+
+      if (storedToken) {
+        setToken(storedToken);
       }
-    };
 
-    initializeAuth();
-  }, []);
-
-  // Persistir usuario
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
-    } else {
-      localStorage.removeItem("user");
+      if (storedUser) {
+        try {
+          setUser(JSON.parse(storedUser));
+        } catch (e) {
+          console.error("Error parsing user from localStorage", e);
+          localStorage.removeItem('user');
+        }
+      }
+    } catch (e) {
+       console.error("Error accessing localStorage", e);
+    } finally {
+      setIsLoading(false);
     }
-  }, [user]);
-
-  const login = useCallback(
-    async (email: string, password: string): Promise<AuthResponse> => {
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 500));
-
-        // Admin hardcodeado (solo para desarrollo)
-        if (email === "admin@libreria.com" && password === "AdminSecure123!") {
-          const adminUser: User = {
-            id: "admin-001",
-            name: "Administrador",
-            email: "admin@libreria.com",
-            role: "admin",
-            token: "fake-admin-token",
-          };
-          setUser(adminUser);
-          return { success: true, isAdmin: true, user: adminUser };
-        }
-
-        // Validación básica usuario normal
-        if (password.length >= 6 && email.includes("@")) {
-          const normalUser: User = {
-            id: `user-${Date.now()}`,
-            name: email.split("@")[0],
-            email,
-            role: "user",
-            token: "fake-user-token",
-          };
-          setUser(normalUser);
-          return { success: true, isAdmin: false, user: normalUser };
-        }
-
-        throw new Error("Credenciales inválidas");
-      } catch (err) {
-        const message =
-          err instanceof Error ? err.message : "Error de autenticación";
-        setError(message);
-        return { success: false, error: message };
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    []
-  );
-
-  const register = useCallback(
-    async (
-      name: string,
-      email: string,
-      password: string
-    ): Promise<AuthResponse> => {
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        // Validaciones
-        if (!name || !email || !password) {
-          throw new Error("Todos los campos son requeridos");
-        }
-
-        if (password.length < 6) {
-          throw new Error("La contraseña debe tener al menos 6 caracteres");
-        }
-
-        if (!email.includes("@")) {
-          throw new Error("Email inválido");
-        }
-
-        await new Promise((resolve) => setTimeout(resolve, 500));
-
-        const newUser: User = {
-          id: `user-${Date.now()}`,
-          name,
-          email,
-          role: "user",
-          token: "fake-register-token",
-        };
-
-        setUser(newUser);
-        return { success: true, user: newUser };
-      } catch (err) {
-        const message =
-          err instanceof Error ? err.message : "Error en registro";
-        setError(message);
-        return { success: false, error: message };
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    []
-  );
-
-  const logout = useCallback(() => {
-    setUser(null);
-    localStorage.removeItem("user"); // Limpiar localStorage
-    // Opcional: limpiar carrito u otros estados
   }, []);
 
-  const clearError = useCallback(() => setError(null), []);
+
+  const login = async (email: string, password: string): Promise<AuthResponse> => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      
+      const response = await fetch('http://localhost:5000/api/users/login', { 
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        const errorMessage = data.message || `Error de autenticación: ${response.status}`;
+        setError(errorMessage); 
+         setIsLoading(false);
+        return { success: false, error: errorMessage };
+      }
+
+      // Login exitoso
+      setToken(data.token); 
+      setUser(data.user); 
+      
+      localStorage.setItem('token', data.token); // Guardar en localStorage
+      localStorage.setItem('user', JSON.stringify(data.user)); // Guardar en localStorage
+
+      setIsLoading(false);
+      return {
+          success: true,
+          user: data.user,
+          isAdmin: data.user?.role === 'admin', 
+          error: undefined 
+      };
+
+    } catch (err: any) {
+      console.error('Error en el login (fetch/network):', err);
+      const errorMessage = err instanceof Error ? err.message : 'Error desconocido en el login';
+      setError(errorMessage); 
+
+      setToken(null);
+      setUser(null);
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+
+      setIsLoading(false);
+     
+      return {
+          success: false,
+          error: errorMessage,
+          user: undefined,
+          isAdmin: undefined
+      };
+    }
+  };
+
+  const logout = () => {
+    setToken(null);
+    setUser(null);
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+  };
+
+  const isAuthenticated = !!token;
 
   return (
     <AuthContext.Provider
       value={{
+        token,
         user,
-        isAuthenticated: !!user,
+        isAuthenticated,
         isLoading,
         error,
-        login,
-        register,
+        login, 
         logout,
-        clearError,
       }}
     >
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
-export function useAuth() {
+export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuth debe usarse dentro de un AuthProvider");
+    throw new Error('useAuth debe usarse dentro de AuthProvider');
   }
   return context;
-}
+};

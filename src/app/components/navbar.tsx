@@ -14,6 +14,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/app/components/ui/dropdown-menu";
+//import Image from "next/image";
 
 export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -40,7 +41,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full bg-blue-800 shadow-lg">
       <div className="container flex h-16 items-center justify-between px-4 md:px-6">
-        {/* Logo */}
+        {/* Logo deberia de usar next/images para la ruta de la imagen?? */}
         <div className="flex items-center gap-2">
           <Link
             href="/"
@@ -48,7 +49,7 @@ export default function Navbar() {
             aria-label="Inicio"
           >
             {/* <BookOpen className="h-6 w-6 text-white" /> */}
-            <img src="logo_libreria.svg" width={60} height={30} alt="logo" />
+            <img src="/logo_libreria.svg" width={60} height={30} alt="logo" />
           </Link>
         </div>
 
