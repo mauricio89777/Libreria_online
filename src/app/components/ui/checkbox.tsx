@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@/lib/utils"; // Asegúrate de tener esta utilidad para combinar clases
+import { cn } from "../../../lib/utils";
 
 export interface CheckboxProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -10,11 +10,14 @@ export interface CheckboxProps
 }
 
 const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
-  ({ className, label, containerClass, ...props }, ref) => {
+  ({ className, label, containerClass, id, ...props }, ref) => {
+    const checkboxId = id || React.useId();
+    
     return (
       <div className={cn("flex items-center space-x-2", containerClass)}>
         <input
           type="checkbox"
+          id={checkboxId}
           className={cn(
             "h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary",
             "disabled:cursor-not-allowed disabled:opacity-50",
@@ -25,7 +28,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
         />
         {label && (
           <label
-            htmlFor={props.id}
+            htmlFor={checkboxId}
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
             {label}
