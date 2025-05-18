@@ -9,6 +9,10 @@ export default defineConfig({
     globals: true,         // Permite usar describe/it/expect sin importar
     setupFiles: './src/test/vitest.setup.ts',  // Configuración adicional (opcional)
     css: true,
+    coverage: {
+      reporter: ['text','lcov'],
+      reportsDirectory: './coverage',
+    },
   },
   resolve: {
     alias: {
