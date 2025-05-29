@@ -64,7 +64,7 @@ const bestsellerBooks: Book[] = [
     author: "J.K. Rowling",
     price: 16.99,
     rating: 4.9,
-    image: "/images/Harry_Potter_y_la_piedra_filosofal.jpg",
+    image: "/images/Harry_Potter_y_la_Piedra_Filosofal.jpg",
     description: "El inicio de las aventuras del joven mago Harry Potter.",
     category: "Fantasía",
     stock: 20,

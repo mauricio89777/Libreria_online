@@ -125,7 +125,7 @@ export default function ContactoPage() {
               </CardHeader>
               <CardContent>
                 {submitted ? (
-                  <div className="p-4 bg-green-50 border border-green-200 text-green-800 rounded-md">
+                  <div data-testid="mensaje-exitoso" className="p-4 bg-green-50 border border-green-200 text-green-800 rounded-md">
                     <p className="font-bold">¡Mensaje enviado con éxito!</p>
                     <p className="text-sm mt-1">
                       Nos pondremos en contacto contigo pronto.

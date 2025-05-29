@@ -118,18 +118,20 @@ export default function Home() {
 
       {/* Bestsellers Section */}
       <section className="container px-4 py-8 md:px-6 md:py-12">
-        <h2 className="mb-8 text-2xl font-bold md:text-3xl">
+        <h2 className="mb-8 text-2xl font-bold md:text-3xl text-center">
           Los Más Vendidos
         </h2>
-        <BookCarousel />
+        <div className="flex justify-center">
+          <BookCarousel />
+        </div>
       </section>
 
       {/* Categories Section */}
       <section className="container px-4 py-8 md:px-6 md:py-12 bg-muted/50">
-        <h2 className="mb-8 text-2xl font-bold md:text-3xl">
+        <h2 className="mb-8 text-2xl font-bold md:text-3xl text-center">
           Categorías Populares
         </h2>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 max-w-5xl mx-auto">
           {[
             { name: "Ficción", img: "/images/genero_ficcion.jpg" },
             { name: "No Ficción", img: "/images/genero_no_ficcion.webp" },

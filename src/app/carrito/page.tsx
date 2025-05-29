@@ -1,6 +1,7 @@
 "use client";
+/*hay que evitar hacer muchas peticiones a google books, hay que hacer una sola y guardarla en el estado */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Minus, Plus, Trash2 } from "lucide-react";
@@ -16,6 +17,46 @@ export default function CarritoPage() {
   const { user } = useAuth();
   const router = useRouter();
   const [couponCode, setCouponCode] = useState("");
+  const [googleImages, setGoogleImages] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    const fetchGoogleImages = async () => {
+      const newGoogleImages: Record<string, string> = {};
+      
+      for (const item of cart) {
+        if (!item.book.image?.startsWith("http")) {
+          try {
+            const response = await fetch(
+              `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(item.book.title)}&maxResults=1`
+            );
+            const data = await response.json();
+            
+            if (data.items && data.items[0]?.volumeInfo?.imageLinks?.thumbnail) {
+              const imageUrl = data.items[0].volumeInfo.imageLinks.thumbnail;
+              const secureImageUrl = imageUrl.replace('http://', 'https://').replace('&edge=curl', '');
+              newGoogleImages[item.book.id.toString()] = secureImageUrl;
+            }
+          } catch (error) {
+            console.error("Error al buscar imagen en Google Books:", error);
+          }
+        }
+      }
+      
+      setGoogleImages(newGoogleImages);
+    };
+
+    fetchGoogleImages();
+  }, [cart]);
+
+  const getImagePath = (book: any) => {
+    if (book.image?.startsWith("http")) {
+      return book.image;
+    }
+    if (googleImages[book.id.toString()]) {
+      return googleImages[book.id.toString()];
+    }
+    return book.image ? `/images/${book.image}` : "/images/placeholder.webp";
+  };
 
   const subtotal = cart.reduce(
     (total, item) => total + item.book.price * item.quantity,
@@ -67,7 +108,7 @@ export default function CarritoPage() {
                   >
                     <div className="aspect-[3/4] overflow-hidden rounded-md">
                       <Image
-                        src={item.book.image || "/placeholder.svg"}
+                        src={getImagePath(item.book)}
                         alt={item.book.title}
                         width={100}
                         height={133}
@@ -77,7 +118,7 @@ export default function CarritoPage() {
                     <div className="grid gap-1">
                       <h3 className="font-semibold">{item.book.title}</h3>
                       <p className="text-sm text-muted-foreground">
-                        {item.book.author}
+                        {item.book.author_id}
                       </p>
                       <p className="font-medium">
                         ${item.book.price.toFixed(2)}
@@ -86,10 +127,10 @@ export default function CarritoPage() {
                         <Button
                           variant="outline"
                           size="icon"
-                          className="h-8 w-8"
+                          className="h-8 w-8 bg-white text-gray-900 hover:bg-gray-100"
                           onClick={() =>
                             updateQuantity(
-                              item.book.id,
+                              String(item.book.id),
                               Math.max(1, item.quantity - 1)
                             )
                           }
@@ -97,13 +138,13 @@ export default function CarritoPage() {
                           <Minus className="h-4 w-4" />
                           <span className="sr-only">Disminuir cantidad</span>
                         </Button>
-                        <span className="w-8 text-center">{item.quantity}</span>
+                        <span className="w-8 text-center text-gray-900">{item.quantity}</span>
                         <Button
                           variant="outline"
                           size="icon"
-                          className="h-8 w-8"
+                          className="h-8 w-8 bg-white text-gray-900 hover:bg-gray-100"
                           onClick={() =>
-                            updateQuantity(item.book.id, item.quantity + 1)
+                            updateQuantity(String(item.book.id), item.quantity + 1)
                           }
                         >
                           <Plus className="h-4 w-4" />
@@ -118,7 +159,8 @@ export default function CarritoPage() {
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => removeFromCart(item.book.id)}
+                        onClick={() => removeFromCart(String(item.book.id))}
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
                       >
                         <Trash2 className="h-4 w-4" />
                         <span className="sr-only">Eliminar</span>
@@ -159,10 +201,16 @@ export default function CarritoPage() {
                       placeholder="Código de descuento"
                       value={couponCode}
                       onChange={(e) => setCouponCode(e.target.value)}
+                      className="bg-white text-gray-900"
                     />
-                    <Button variant="outline">Aplicar</Button>
+                    <Button variant="outline" className="bg-white text-gray-900 hover:bg-gray-100">
+                      Aplicar
+                    </Button>
                   </div>
-                  <Button className="w-full" onClick={handleCheckout}>
+                  <Button 
+                    className="w-full bg-blue-600 text-white hover:bg-blue-700" 
+                    onClick={handleCheckout}
+                  >
                     Finalizar Compra
                   </Button>
                 </div>
