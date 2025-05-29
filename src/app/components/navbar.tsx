@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { BookOpen, Search, ShoppingCart, User, LogOut } from "lucide-react";
+import { BookOpen, Search, ShoppingCart, User, LogOut, Settings } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
 import { Input } from "./ui/input";
 import { useCart } from "../context/cart-context";
@@ -14,7 +14,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/app/components/ui/dropdown-menu";
-//import Image from "next/image";
 
 export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -137,30 +136,37 @@ export default function Navbar() {
                   <User className="h-5 w-5" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 bg-white">
-                {/* esto es perfil */}
-                <DropdownMenuItem asChild className="cursor-pointer">
+              <DropdownMenuContent className="w-56 bg-white shadow-lg" align="end" forceMount>
+                <div className="p-2">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none text-gray-900">{user?.name}</p>
+                    <p className="text-xs leading-none text-gray-500">
+                      {user?.email}
+                    </p>
+                  </div>
+                </div>
+                <div className="h-px bg-gray-200 my-1" />
+                <DropdownMenuItem asChild className="text-gray-900 hover:bg-gray-100 cursor-pointer">
                   <Link href="/perfil" className="flex items-center">
                     <User className="mr-2 h-4 w-4" />
-                    Mi Perfil
+                    <span>Mi Perfil</span>
                   </Link>
                 </DropdownMenuItem>
-                {/* verifica si es admin y permite el panel admin */}
-                {user.role === "admin" && (
-                  <DropdownMenuItem asChild className="cursor-pointer">
+                {user?.role === "admin" && (
+                  <DropdownMenuItem asChild className="text-gray-900 hover:bg-gray-100 cursor-pointer">
                     <Link href="/administrador" className="flex items-center">
-                      <User className="mr-2 h-4 w-4" />
-                      Panel Admin
+                      <Settings className="mr-2 h-4 w-4" />
+                      <span>Panel Admin</span>
                     </Link>
                   </DropdownMenuItem>
                 )}
-                {/* Logout */}
-                <DropdownMenuItem
-                  className="cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50"
+                <div className="h-px bg-gray-200 my-1" />
+                <DropdownMenuItem 
+                  className="text-red-600 hover:bg-red-50 cursor-pointer"
                   onClick={handleLogout}
                 >
                   <LogOut className="mr-2 h-4 w-4" />
-                  Cerrar sesión
+                  <span>Cerrar Sesión</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

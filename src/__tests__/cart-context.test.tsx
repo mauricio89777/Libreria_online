@@ -3,12 +3,10 @@ import { render, act } from '@testing-library/react';
 import { CartProvider, useCart } from '../app/context/cart-context';
 import type { Book } from '../app/types/book';
 
-// Componente de prueba para exponer el contexto
 function TestComponent({ book, quantity }: { book: Book, quantity?: number }) {
   const { cart, addToCart } = useCart();
   React.useEffect(() => {
     addToCart(book, quantity);
-    // eslint-disable-next-line
   }, []);
   return (
     <div>

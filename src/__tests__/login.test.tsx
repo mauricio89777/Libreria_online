@@ -4,8 +4,6 @@ import LoginPage from '../app/login/page';
 import { AuthContext } from '../app/context/auth-context';
 import { vi } from 'vitest';
 
-
-
 vi.mock('next/navigation', () => ({
     useRouter: () => ({
       push: vi.fn(),
@@ -15,8 +13,6 @@ vi.mock('next/navigation', () => ({
     }),
   }));
 
-
-// Mock del contexto de autenticación
 const mockLogin = vi.fn().mockResolvedValue({
   success: false,
   error: 'Credenciales incorrectas'
