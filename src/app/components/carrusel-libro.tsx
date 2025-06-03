@@ -152,6 +152,7 @@ export default function BookCarousel() {
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
+                      data-testid={"star"}
                       className={`h-4 w-4 ${
                         i < Math.floor(book.rating)
                           ? "fill-primary text-primary"
