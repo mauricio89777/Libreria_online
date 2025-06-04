@@ -12,6 +12,7 @@ interface AuthContextType {
   error: string | null;
   // login ahora devuelve AuthResponse
   login: (email: string, password: string) => Promise<AuthResponse>;
+  register: (name: string, email: string, password: string) => Promise<AuthResponse>;
   logout: () => void;
 }
 
@@ -105,6 +106,38 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const register = async (name: string, email: string, password: string): Promise<AuthResponse> => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch('http://localhost:5000/api/users/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        const errorMessage = data.message || `Error en el registro: ${response.status}`;
+        setError(errorMessage);
+        setIsLoading(false);
+        return { success: false, error: errorMessage };
+      }
+
+      // Registro exitoso, intentamos iniciar sesión automáticamente
+      return await login(email, password);
+
+    } catch (err: any) {
+      console.error('Error en el registro:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Error desconocido en el registro';
+      setError(errorMessage);
+      setIsLoading(false);
+      return { success: false, error: errorMessage };
+    }
+  };
+
   const logout = () => {
     setToken(null);
     setUser(null);
@@ -122,7 +155,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         isAuthenticated,
         isLoading,
         error,
-        login, 
+        login,
+        register,
         logout,
       }}
     >

@@ -76,6 +76,9 @@ describe('Buscador Component', () => {
   })
 
   it('maneja errores de búsqueda', async () => {
+    // Silenciar console.error para esta prueba
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    
     ;(global.fetch as jest.Mock).mockRejectedValueOnce(new Error('Error de red'))
     
     render(<Buscador />)
@@ -86,8 +89,11 @@ describe('Buscador Component', () => {
     fireEvent.click(searchButton)
     
     await waitFor(() => {
-      expect(screen.getByText('Ingresa un término de búsqueda')).toBeInTheDocument()
+      expect(screen.getByText('Error de red')).toBeInTheDocument()
     })
+
+    // Restaurar console.error
+    consoleSpy.mockRestore()
   })
 
   it('no realiza búsqueda con término vacío', () => {
