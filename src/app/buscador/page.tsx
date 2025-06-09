@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-// Tipado para los libros (opcional pero recomendado)
+// Tipado para los libros
 interface Libro {
   id: string;
   title: string;

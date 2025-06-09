@@ -46,9 +46,9 @@ export default function LoginPage() {
 
 
   return (
-    <div className="container flex min-h-[80vh] items-center justify-center px-4">
-      <div className="w-full max-w-md space-y-6">
-        <h1 className="text-3xl font-bold text-center">Iniciar Sesión</h1> {/* Añadí text-center */}
+    <div className="flex min-h-screen w-full items-center justify-center">
+      <div className="w-full max-w-md space-y-6 p-4">
+        <h1 className="text-3xl font-bold text-center">Iniciar Sesión</h1>
 
         {error && (
           <div className="rounded-md bg-red-100 p-3 text-red-700">{error}</div>

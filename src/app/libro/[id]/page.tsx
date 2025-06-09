@@ -226,6 +226,8 @@ export default function BookDetailPage() {
                 size="icon"
                 onClick={handleDecreaseQuantity}
                 disabled={quantity <= 1}
+                //test cambio a minus
+                aria-label="minus"
               >
                 <Minus className="h-4 w-4" />
               </Button>
@@ -234,6 +236,7 @@ export default function BookDetailPage() {
                 variant="outline"
                 size="icon"
                 onClick={handleIncreaseQuantity}
+                aria-label="plus"
               >
                 <Plus className="h-4 w-4" />
               </Button>
