@@ -220,7 +220,7 @@ export default function RegistroPage() {
               <p className="text-xs text-red-500">{errors.acceptTerms}</p>
             )}
 
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
+            <Button type="submit" className="w-full bg-blue-600 text-white" disabled={isSubmitting}>
               {isSubmitting ? (
                 <div className="flex items-center gap-2"></div>
               ) : (
