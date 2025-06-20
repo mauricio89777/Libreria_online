@@ -77,7 +77,7 @@ const CategoriaClient = () => {
       </form>
 
       <table className="w-full border border-gray-300">
-        <thead className="bg-gray-100">
+        <thead className="bg-blue-600 text-white">
           <tr>
             {/* ¡AGREGA ESTE ENCABEZADO PARA EL ID! */}
             <th className="border px-4 py-2 text-left">ID</th>

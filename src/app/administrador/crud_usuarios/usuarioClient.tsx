@@ -86,7 +86,7 @@ export default function UsuarioClient() {
 
       <table className="table-auto w-full text-left border">
         <thead>
-          <tr className="bg-gray-100">
+          <tr className="bg-blue-600 text-white">
             <th className="p-2">Nombre</th>
             <th className="p-2">Correo</th>
             <th className="p-2">Rol</th>

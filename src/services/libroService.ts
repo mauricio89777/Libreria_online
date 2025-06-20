@@ -1,14 +1,15 @@
 import axios from 'axios';
-import { Book } from '@/app/types/book'; // Importa el TIPO Book (estructura API GET)
-import { BookFormData } from '@/app/types/typeform'; // Importa el TIPO BookFormData (estructura formulario)
+import { Book } from '@/app/types/book'; 
+import { BookFormData } from '@/app/types/typeform'; // debria improtarlo??
 
-const API_URL = 'http://localhost:5000/api/books'; // ¡Verifica que sea correcto!
+const API_URL = 'http://localhost:5000/api/books'; 
+
 
 type BookApiPayload = {
    title: string;
    description: string | null;
-   author_id: number | null; // <-- NOMBRE DE CAMPO QUE ESPERA EL BACKEND
-   category_id: number | null; // <-- NOMBRE DE CAMPO QUE ESPERA EL BACKEND
+   author_id: number | null; 
+   category_id: number | null; 
    price: number;
    rating: number;
    image: string | null;
@@ -17,43 +18,36 @@ type BookApiPayload = {
 
 
 type CreateBookResponse = {
-    id: Book; // Tu backend devuelve el libro completo dentro de un campo 'id'
+    id: Book; 
     message: string;
 };
 
 type UpdateBookResponse = {
-    message: string; // para que pasa
+    message: string; 
 };
 
 
-// Función: Obtener todos los libros
-// **Asegúrate de que axios.get esté anotado con <Book[]>**
 export const getLibros = async (token: string) => {
-  return await axios.get<Book[]>(`${API_URL}`, { // <--- ¡Aquí debe ser Book[]!
+  return await axios.get<Book[]>(`${API_URL}`, { 
     headers: { Authorization: `Bearer ${token}` },
   });
 };
 
-// Función: Crear nuevo libro
-// **Asegúrate de que reciba BookApiPayload y axios.post esté anotado con <CreateBookResponse>**
-export const createLibro = async (bookData: BookApiPayload, token: string) => { // <--- ¡Aquí debe ser BookApiPayload!
-  return await axios.post<CreateBookResponse>(`${API_URL}`, bookData, { // <--- ¡Aquí debe ser CreateBookResponse!
+export const createLibro = async (bookData: BookApiPayload, token: string) => { 
+  return await axios.post<CreateBookResponse>(`${API_URL}`, bookData, { 
     headers: { Authorization: `Bearer ${token}` },
   });
 };
 
-// Función: Actualizar un libro por ID
-// **Asegúrate de que reciba Partial<BookApiPayload> y axios.put esté anotado con <UpdateBookResponse>**
-export const updateLibro = async (id: number | string, updatedData: Partial<BookApiPayload>, token: string) => { // <--- ¡Aquí debe ser Partial<BookApiPayload>!
-  return await axios.put<UpdateBookResponse>(`${API_URL}/${id}`, updatedData, { // <--- ¡Aquí debe ser UpdateBookResponse!
+export const updateLibro = async (id: number | string, updatedData: Partial<BookApiPayload>, token: string) => { 
+  return await axios.put<UpdateBookResponse>(`${API_URL}/${id}`, updatedData, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
 
 // Función: Eliminar un libro por ID
 export const deleteLibro = async (id: number | string, token: string) => {
-  // No se espera un cuerpo específico, el tipo de respuesta puede ser 'any' o 'void' si no devuelve JSON
-  return await axios.delete<any>(`${API_URL}/${id}`, { // <any> o <void> si no hay JSON de respuesta
+  return await axios.delete<any>(`${API_URL}/${id}`, { 
     headers: { Authorization: `Bearer ${token}` },
   });
 };

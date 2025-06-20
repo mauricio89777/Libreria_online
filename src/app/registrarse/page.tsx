@@ -1,5 +1,3 @@
-//fijarse en el estilo, esto..... esto hay que arrelgarlo con el nuevo loign
-
 "use client";
 
 import type React from "react";
@@ -20,6 +18,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/components/ui/card";
+import { createUser } from "@/services/usuarioService";
 
 export default function RegistroPage() {
   const [formData, setFormData] = useState({
@@ -101,12 +100,12 @@ export default function RegistroPage() {
         router.push("/");
       } else {
         setErrors({
-          general: result.error || "Error desconocido al registrar",
+          general: result.error || "Error al registrar usuario",
         });
       }
-    } catch (error) {
+    } catch (error: any) {
       setErrors({
-        general: error instanceof Error ? error.message : "Error inesperado",
+        general: error.message || "Error inesperado al registrar",
       });
     } finally {
       setIsSubmitting(false);
@@ -210,7 +209,7 @@ export default function RegistroPage() {
               >
                 Acepto los{" "}
                 <Link
-                  href="/terminos-y-condiciones"
+                  href="/terminosCodiciones"
                   className="text-primary hover:underline"
                 >
                   términos y condiciones
@@ -221,7 +220,7 @@ export default function RegistroPage() {
               <p className="text-xs text-red-500">{errors.acceptTerms}</p>
             )}
 
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
+            <Button type="submit" className="w-full bg-blue-600 text-white" disabled={isSubmitting}>
               {isSubmitting ? (
                 <div className="flex items-center gap-2"></div>
               ) : (

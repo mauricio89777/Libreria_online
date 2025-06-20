@@ -7,7 +7,7 @@ export default function CatalogoPage() {
   return (
     <div className="container px-4 py-8 md:px-6 md:py-12">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Catálogo de Libros</h1>
+        <h1 className="text-3xl font-bold text-white">Catálogo de Libros</h1>
         <div className="flex gap-2">
           <Button variant="outline" className="border-gray-300">
             Filtros

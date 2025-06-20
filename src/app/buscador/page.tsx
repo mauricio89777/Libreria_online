@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-// Tipado para los libros (opcional pero recomendado)
+// Tipado para los libros
 interface Libro {
   id: string;
   title: string;
@@ -15,11 +15,16 @@ export default function Buscador() {
   const [query, setQuery] = useState("");
   const [libros, setLibros] = useState<Libro[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const buscarLibros = async () => {
-    if (!query.trim()) return; // Evitar búsquedas vacías
+    if (!query.trim()) {
+      setError("Ingresa un término de búsqueda");
+      return;
+    }
 
     setLoading(true);
+    setError(null);
     try {
       const response = await fetch(
         `/api/libros?q=${encodeURIComponent(query)}`
@@ -28,6 +33,7 @@ export default function Buscador() {
       setLibros(data);
     } catch (error) {
       console.error("Error:", error);
+      setError("Error de red");
     } finally {
       setLoading(false);
     }
@@ -81,7 +87,7 @@ export default function Buscador() {
         </div>
       ) : (
         <p className="text-center text-gray-500">
-          {loading ? "Cargando..." : "Ingresa un término de búsqueda"}
+          {loading ? "Cargando..." : error || "Ingresa un término de búsqueda"}
         </p>
       )}
     </div>

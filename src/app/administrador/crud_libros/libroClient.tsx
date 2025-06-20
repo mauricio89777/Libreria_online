@@ -266,8 +266,9 @@ const LibroClient = () => {
       </form>
       <h3 className="text-xl font-bold mb-2">Lista de Libros</h3>
       <div className="overflow-x-auto"> 
-      <table className="w-full border border-gray-300 bg-white"> 
-        <thead className="bg-gray-100">
+      <table className="w-full border border-gray-300 "> 
+        {/* bg-white */}
+        <thead className="bg-blue-600 text-white">
           <tr>
             <th className="border px-4 py-2 text-left">ID</th>
             <th className="border px-4 py-2 text-left">Título</th>

@@ -1,5 +1,6 @@
 "use client";
 /*hay que evitar hacer muchas peticiones a google books, hay que hacer una sola y guardarla en el estado */
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -13,6 +14,7 @@ import { useAuth } from "@/app/context/auth-context";
 import { useRouter } from "next/navigation";
 
 export default function CarritoPage() {
+  const [showPaypal, setShowPaypal] = useState(false);
   const { cart, updateQuantity, removeFromCart, clearCart } = useCart();
   const { user } = useAuth();
   const router = useRouter();
@@ -65,17 +67,14 @@ export default function CarritoPage() {
   const shipping = subtotal > 50 ? 0 : 4.99;
   const total = subtotal + shipping;
 
-  const handleCheckout = () => {
-    if (!user) {
-      router.push("/login?redirect=/carrito");
-      return;
-    }
+ const handleCheckout = async () => {
+  if (!user) {
+    router.push("/login?redirect=/carrito");
+    return;
+  }
+  setShowPaypal(true);
 
-    // Aquí iría la lógica para procesar el pago
-    alert("¡Compra realizada con éxito!");
-    clearCart();
-    router.push("/");
-  };
+};
 
   if (cart.length === 0) {
     return (
@@ -207,12 +206,56 @@ export default function CarritoPage() {
                       Aplicar
                     </Button>
                   </div>
-                  <Button 
-                    className="w-full bg-blue-600 text-white hover:bg-blue-700" 
+                  {!showPaypal ? (
+                  <Button
+                    className="w-full bg-blue-600 text-white hover:bg-blue-700"
                     onClick={handleCheckout}
                   >
                     Finalizar Compra
                   </Button>
+                ) : (
+                  <PayPalScriptProvider options={{ clientId: "AanFFp_lAreUIyHx8x5Xyc5FCv_hLe_wtHdzz0LWqYwQq2uLk78sIoXB_B0nT2gapJ2uaAA1jh-o0YTH" }}>
+                    <PayPalButtons
+                      createOrder={async () => {
+                        const res = await fetch("http://localhost:5000/api/paypal/create-order", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ total, usuario_id: user!.id, carrito: cart }),
+                        });
+                        const data = await res.json();
+                        return data.id;
+                      }}
+                      onApprove={async (data) => {
+                          console.log("Order ID recibido en onApprove:", data.orderID);
+
+                          const carritoBackend = cart.map((item) => ({
+                            libro_id: item.book.id,
+                            cantidad: item.quantity,
+                            precio_unitario: item.book.price,
+                          }));
+
+                        console.log("Carrito enviado al backned", carritoBackend);
+
+                        const res = await fetch("http://localhost:5000/api/paypal/capture-order", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ 
+                            orderID: data.orderID,
+                            usuario_id: user!.id,
+                            carrito: carritoBackend, 
+                          }),
+                        });
+                        await res.json();
+                        clearCart();
+                        router.push("/");
+                      }}
+                      onError={(err) => {
+                        console.error(err);
+                        alert("Error con PayPal");
+                      }}
+                    />
+                  </PayPalScriptProvider>
+                   )}  
                 </div>
               </div>
             </div>

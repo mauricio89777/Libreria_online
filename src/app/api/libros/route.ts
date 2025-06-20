@@ -5,19 +5,18 @@ export async function GET(request: Request) {
   const query = searchParams.get("q") || "";
 
   try {
-    // 1. Construye la URL correctamente con API key
+    // url con API key
     const apiUrl = new URL("https://www.googleapis.com/books/v1/volumes");
     apiUrl.searchParams.append("q", query);
     apiUrl.searchParams.append("maxResults", "12");
 
-    // 2. Usa parámetro key (no Authorization Bearer)
+    // key
     if (process.env.GOOGLE_BOOKS_API_KEY) {
       apiUrl.searchParams.append("key", process.env.GOOGLE_BOOKS_API_KEY);
     }
 
     const res = await fetch(apiUrl.toString());
 
-    // 3. Mejor manejo de errores
     if (!res.ok) {
       const errorData = await res.json();
       console.error("Google Books API Error:", errorData);
@@ -26,7 +25,7 @@ export async function GET(request: Request) {
 
     const data = await res.json();
 
-    // 4. Formatea la respuesta consistentemente
+    
     const libros =
       data.items?.map((item: any) => ({
         id: item.id,
